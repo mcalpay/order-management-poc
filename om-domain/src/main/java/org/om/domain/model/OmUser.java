@@ -1,10 +1,10 @@
 package org.om.domain.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-
-import java.io.Serializable;
 
 @Builder
 @Entity
@@ -14,18 +14,16 @@ import java.io.Serializable;
 @Getter
 @Setter
 @EqualsAndHashCode
-//customerId, assetName, size, usableSize
-public class Asset {
+public class OmUser {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long customerId;
+    private String userName;
 
-    private String assetName;
+    private String password;
 
-    private int size;
-
-    private int usableSize;
+    private Role role;
 
 }

@@ -12,13 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HealthCheckTest {
 
-    private int port = 8080;
-    private final String username = "user";
-    private final String password = "password";
+    private final String password = "admin";
 
     @BeforeEach
     public void setUp() {
-        RestAssured.port = port;
+        RestAssured.port = 8080;
         RestAssured.baseURI = "http://localhost";
     }
 
@@ -26,7 +24,7 @@ public class HealthCheckTest {
     public void testHealthEndpointWithValidCredentials() {
         given()
                 .auth()
-                .basic(username, password)
+                .basic("admin", password)
                 .when()
                 .get("/actuator/health")
                 .then()
@@ -39,7 +37,7 @@ public class HealthCheckTest {
     public void testHealthEndpointWithInvalidCredentials() {
         given()
                 .auth()
-                .basic(username, "wrongpassword")
+                .basic("admin", "wrongpassword")
                 .when()
                 .get("/actuator/health")
                 .then()
@@ -51,7 +49,7 @@ public class HealthCheckTest {
         // This test gets the full response and makes multiple assertions
         Response response = given()
                 .auth()
-                .basic(username, password)
+                .basic("admin", password)
                 .when()
                 .get("/actuator/health")
                 .then()

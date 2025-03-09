@@ -1,11 +1,8 @@
 package org.om.domain.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Table(name = "orders")
@@ -21,9 +18,10 @@ import java.time.LocalDateTime;
 public class Order {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Serializable customerId;
+    private Long customerId;
 
     private String assetName;
 
