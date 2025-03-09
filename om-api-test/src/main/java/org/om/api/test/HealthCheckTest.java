@@ -2,13 +2,11 @@ package org.om.api.test;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HealthCheckTest {
 
@@ -42,22 +40,6 @@ public class HealthCheckTest {
                 .get("/actuator/health")
                 .then()
                 .statusCode(401);
-    }
-
-    @Test
-    public void testHealthEndpointWithValidCredentialsDetailedAssertion() {
-        // This test gets the full response and makes multiple assertions
-        Response response = given()
-                .auth()
-                .basic("admin", password)
-                .when()
-                .get("/actuator/health")
-                .then()
-                .extract()
-                .response();
-
-        assertEquals(200, response.statusCode());
-        assertEquals("UP", response.jsonPath().getString("status"));
     }
 
 }

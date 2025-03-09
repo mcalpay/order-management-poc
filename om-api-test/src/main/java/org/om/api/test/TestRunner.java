@@ -20,7 +20,7 @@ import java.util.Optional;
 public class TestRunner {
     public static void main(String[] args) {
         LauncherDiscoveryRequest request = LauncherDiscoveryRequestBuilder.request()
-                .selectors(DiscoverySelectors.selectPackage("org.om.api.test"))  // Change package name
+                .selectors(DiscoverySelectors.selectPackage("org.om.api.test"))
                 .filters(ClassNameFilter.includeClassNamePatterns(".*Test"))
                 .build();
 
