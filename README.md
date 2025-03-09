@@ -9,13 +9,13 @@ Once clean install complete you may run the application with:
     java -jar ./om-app/target/om-app-0.0.1-SNAPSHOT.jar
 
 Users with preloaded data:
-    username: admin, password: admin, role: admin
-    username: user, password: admin, role: customer
-        assets: [{TRY, 1000}, {WV, 1000}]
-    username: investor, password: admin, role: customer
-        assets: [{APPLE, 1000}]
-    username: trader, password: admin, role: customer
-        assets: [{TRY, 1000}]
+* username: admin, password: admin, role: admin
+* username: user, password: admin, role: customer
+  * assets: [{TRY, 1000}, {WV, 1000}]
+* username: investor, password: admin, role: customer 
+  * assets: [{APPLE, 1000}]
+* username: trader, password: admin, role: customer
+  * assets: [{TRY, 1000}]
 
 You may find/test the api-doc on:
     http://localhost:8080/swagger-ui/index.html
