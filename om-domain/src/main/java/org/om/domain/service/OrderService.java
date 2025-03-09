@@ -73,7 +73,7 @@ public class OrderService {
         if(optional.isPresent()) {
             Order order = optional.get();
             if(!isAdmin && !principalId.equals(order.getCustomerId())) {
-                throw OmAuthorizationException.newNotAuthorizedException();
+                throw new OmAuthorizationException();
             }
             if(OrderStatus.PENDING.equals(order.getStatus())) {
                 order.setStatus(OrderStatus.CANCELED);

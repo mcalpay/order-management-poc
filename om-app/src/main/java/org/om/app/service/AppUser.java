@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public class AppUser  extends User {
 
-    private Long id;
+    private final Long id;
 
     public AppUser(OmUser user) {
         super(user.getUserName(), user.getPassword(), List.of(new SimpleGrantedAuthority(user.getRole().name())));

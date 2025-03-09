@@ -4,8 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.io.Serializable;
-
 @Builder
 @Entity
 @NoArgsConstructor

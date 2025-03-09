@@ -3,7 +3,6 @@ package org.om.app.service;
 import lombok.RequiredArgsConstructor;
 import org.om.domain.model.OmUser;
 import org.om.domain.service.UserService;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
