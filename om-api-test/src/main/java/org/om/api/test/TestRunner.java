@@ -57,7 +57,7 @@ public class TestRunner {
 
         // Print final test summary
         TestExecutionSummary summary = summaryListener.getSummary();
-        //summary.printTo(new PrintWriter(System.out));
+        summary.printTo(new PrintWriter(System.out));
 
         // Exit with non-zero code if tests fail
         if (summary.getTotalFailureCount() > 0) {
