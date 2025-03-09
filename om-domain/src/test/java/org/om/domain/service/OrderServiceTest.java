@@ -45,7 +45,7 @@ class OrderServiceTest {
 
     @BeforeEach
     void setUp() {
-        testAsset = Asset.builder().customerId(1l).assetName("BTC").size(10).usableSize(10).build();
+        testAsset = Asset.builder().customerId(1L).assetName("BTC").size(10).usableSize(10).build();
         newOrder = new NewOrder(1L, "BTC", "SELL", 10, 10);
     }
 
@@ -68,7 +68,7 @@ class OrderServiceTest {
 
     @Test
     void testCreate_WhenBuyingAndHasEnoughFunds() {
-        Asset tryAsset = Asset.builder().customerId(1l).assetName("TRY").size(2000).usableSize(2000).build();
+        Asset tryAsset = Asset.builder().customerId(1L).assetName("TRY").size(2000).usableSize(2000).build();
         NewOrder buyOrder = new NewOrder(1L, "BTC", "BUY", 200, 1);
         when(assetRepository.findByCustomerIdAndAssetName(1L, "TRY")).thenReturn(Optional.of(tryAsset));
         when(orderRepository.save(any(Order.class))).thenReturn(buyOrder.toEntity());
@@ -90,7 +90,7 @@ class OrderServiceTest {
 
     @Test
     void testDeleteOrder_WhenAuthorizedAndPending() {
-        Order pendingOrder = Order.builder().customerId(1l).assetName("Product A").price(2).size(100).build();
+        Order pendingOrder = Order.builder().customerId(1L).assetName("Product A").price(2).size(100).build();
         pendingOrder.setStatus(OrderStatus.PENDING);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(pendingOrder));
         orderService.deleteOrder(1L, 1L, false);
@@ -100,14 +100,14 @@ class OrderServiceTest {
 
     @Test
     void testDeleteOrder_WhenNotAuthorized() {
-        Order order = Order.builder().customerId(1l).assetName("Product A").price(2).size(100).build();
+        Order order = Order.builder().customerId(1L).assetName("Product A").price(2).size(100).build();
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         assertThrows(OmAuthorizationException.class, () -> orderService.deleteOrder(1L, 2L, false));
     }
 
     @Test
     void testDeleteOrder_WhenNoPendingOrder() {
-        Order matchedOrder = Order.builder().customerId(1l).assetName("Product A").price(2).size(100).build();
+        Order matchedOrder = Order.builder().customerId(1L).assetName("Product A").price(2).size(100).build();
         matchedOrder.setStatus(OrderStatus.MATCHED);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(matchedOrder));
         assertThrows(OmException.class, () -> orderService.deleteOrder(1L, 1L, true));

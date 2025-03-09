@@ -20,6 +20,6 @@ Users with preloaded data:
 You may find/test the api-doc on:
     http://localhost:8080/swagger-ui/index.html
 
-om-api-test contains end 2 end api test scripts that coulbe executed with once the application is runnig in localhost:8080:
+om-api-test contains api test scripts that can be executed with once the application is runnig in localhost:8080:
 
     java -jar ./om-api-test/target/om-api-test-0.0.1-SNAPSHOT.jar

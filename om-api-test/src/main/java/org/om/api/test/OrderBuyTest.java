@@ -78,13 +78,12 @@ public class OrderBuyTest {
                 .contentType(ContentType.JSON)
                 .body(getOrderJson(2, "WV", "BUY", 600, 1))
                 .when();
-        Response response = largeBuyRequest
+        largeBuyRequest
                 .post(CREATE_ROUTE)
                 .then()
                 .statusCode(201)
                 .extract().response();
-
-        response = largeBuyRequest
+        Response response = largeBuyRequest
                 .post(CREATE_ROUTE)
                 .then()
                 .statusCode(400)

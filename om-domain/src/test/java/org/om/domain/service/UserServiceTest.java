@@ -6,28 +6,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.om.domain.dto.AssetResponse;
-import org.om.domain.dto.NewOrder;
-import org.om.domain.dto.NewOrderResponse;
-import org.om.domain.dto.OrderResponse;
-import org.om.domain.exception.OmAuthorizationException;
-import org.om.domain.exception.OmException;
-import org.om.domain.model.Asset;
 import org.om.domain.model.OmUser;
-import org.om.domain.model.Order;
-import org.om.domain.model.OrderStatus;
-import org.om.domain.repository.AssetRepository;
-import org.om.domain.repository.OrderRepository;
 import org.om.domain.repository.UserRepository;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
