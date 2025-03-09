@@ -35,4 +35,7 @@ public class Order {
 
     private LocalDateTime createDate;
 
+    public boolean isSelling() {
+        return OrderSide.SELL.equals(orderSide);
+    }
 }

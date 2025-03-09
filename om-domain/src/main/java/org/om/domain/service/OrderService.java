@@ -25,6 +25,8 @@ import java.util.Optional;
 @Service
 public class OrderService {
 
+    private final String TRY_ASSET = "TRY";
+
     private final OrderRepository orderRepository;
 
     private final AssetRepository assetRepository;
@@ -36,20 +38,19 @@ public class OrderService {
         if(newOrder.isSelling()){
             String assetName = newOrder.assetName();
             Optional<Asset> assetOptional =  assetRepository.findByCustomerIdAndAssetName(newOrder.customerId(), assetName);
-            Asset asset = assetOptional.orElseThrow(OmException::newCustomerDoesNotHaveAsset);
+            Asset asset = assetOptional.orElseThrow(OmException::newCustomerDoesNotHaveAssetException);
             if(asset.getUsableSize() < newOrder.size()) {
-                throw OmException.newCustomerDoesNotHaveAsset();
+                throw OmException.newCustomerDoesNotHaveAssetException();
             }
 
             asset.setUsableSize(asset.getUsableSize() - newOrder.size());
             assetRepository.save(asset);
 
         } else {
-            String assetName = "TRY";
-            Optional<Asset> assetOptional =  assetRepository.findByCustomerIdAndAssetName(newOrder.customerId(), assetName);
-            Asset asset = assetOptional.orElseThrow(OmException::newCustomerDoesNotHaveAsset);
+            Optional<Asset> assetOptional =  assetRepository.findByCustomerIdAndAssetName(newOrder.customerId(), TRY_ASSET);
+            Asset asset = assetOptional.orElseThrow(OmException::newCustomerDoesNotHaveAssetException);
             if(asset.getUsableSize() < newOrder.size() * newOrder.price()) {
-                throw OmException.newCustomerDoesNotHaveAsset();
+                throw OmException.newCustomerDoesNotHaveAssetException();
             }
 
             asset.setUsableSize(asset.getUsableSize() - newOrder.size() * newOrder.price());
@@ -68,6 +69,7 @@ public class OrderService {
         return orderList.stream().map(OrderResponse::fromOrder).toList();
     }
 
+    @Transactional
     public void deleteOrder(Long orderId, Long principalId, boolean isAdmin) {
         Optional<Order> optional = orderRepository.findById(orderId);
         if(optional.isPresent()) {
@@ -77,6 +79,19 @@ public class OrderService {
             }
             if(OrderStatus.PENDING.equals(order.getStatus())) {
                 order.setStatus(OrderStatus.CANCELED);
+                if(order.isSelling()) {
+                    Asset asset = assetRepository
+                            .findByCustomerIdAndAssetName(order.getCustomerId(), order.getAssetName())
+                            .orElseThrow(OmException::newCustomerDoesNotHaveAssetException);
+                    asset.setUsableSize(asset.getUsableSize() + order.getSize());
+                    assetRepository.save(asset);
+                } else {
+                    Asset asset = assetRepository
+                            .findByCustomerIdAndAssetName(order.getCustomerId(), TRY_ASSET)
+                            .orElseThrow(OmException::newCustomerDoesNotHaveAssetException);
+                    asset.setUsableSize(asset.getUsableSize() + order.getSize() * order.getPrice());
+                    assetRepository.save(asset);
+                }
                 orderRepository.save(order);
                 return;
             }

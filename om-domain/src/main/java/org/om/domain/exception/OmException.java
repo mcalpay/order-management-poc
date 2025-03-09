@@ -9,7 +9,7 @@ public class OmException extends RuntimeException {
         return new OmException("No pending order found!");
     }
 
-    public static OmException newCustomerDoesNotHaveAsset() {
+    public static OmException newCustomerDoesNotHaveAssetException() {
         return new OmException("Customer does not have asset!");
     }
 

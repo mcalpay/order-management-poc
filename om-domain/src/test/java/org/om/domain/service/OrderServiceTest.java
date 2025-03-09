@@ -14,6 +14,7 @@ import org.om.domain.exception.OmAuthorizationException;
 import org.om.domain.exception.OmException;
 import org.om.domain.model.Asset;
 import org.om.domain.model.Order;
+import org.om.domain.model.OrderSide;
 import org.om.domain.model.OrderStatus;
 import org.om.domain.repository.AssetRepository;
 import org.om.domain.repository.OrderRepository;
@@ -89,13 +90,34 @@ class OrderServiceTest {
     }
 
     @Test
-    void testDeleteOrder_WhenAuthorizedAndPending() {
-        Order pendingOrder = Order.builder().customerId(1L).assetName("Product A").price(2).size(100).build();
+    void testDeleteOrder_WhenAuthorizedAndPendingAndBuying() {
+        Order pendingOrder = Order.builder().customerId(1L).assetName("Product A").price(2).size(100)
+                .orderSide(OrderSide.BUY).build();
         pendingOrder.setStatus(OrderStatus.PENDING);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(pendingOrder));
+        Asset tryAsset = new Asset(1L, 1L, "TRY", 200, 0);
+        when(assetRepository.findByCustomerIdAndAssetName(pendingOrder.getCustomerId(), "TRY"))
+                .thenReturn(Optional.of(tryAsset));
         orderService.deleteOrder(1L, 1L, false);
         verify(orderRepository, times(1)).save(pendingOrder);
         assertEquals(OrderStatus.CANCELED, pendingOrder.getStatus());
+        assertEquals(200L, tryAsset.getUsableSize());
+    }
+
+
+    @Test
+    void testDeleteOrder_WhenAuthorizedAndPendingAndSelling() {
+        Order pendingOrder = Order.builder().customerId(1L).assetName("Product A").price(2).size(100)
+                .orderSide(OrderSide.SELL).build();
+        pendingOrder.setStatus(OrderStatus.PENDING);
+        when(orderRepository.findById(1L)).thenReturn(Optional.of(pendingOrder));
+        Asset productA = new Asset(1L, 1L, "Product A", 100, 0);
+        when(assetRepository.findByCustomerIdAndAssetName(pendingOrder.getCustomerId(), pendingOrder.getAssetName()))
+                .thenReturn(Optional.of(productA));
+        orderService.deleteOrder(1L, 1L, false);
+        verify(orderRepository, times(1)).save(pendingOrder);
+        assertEquals(OrderStatus.CANCELED, pendingOrder.getStatus());
+        assertEquals(100L, productA.getUsableSize());
     }
 
     @Test
